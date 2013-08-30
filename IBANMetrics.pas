@@ -36,6 +36,8 @@ type
     nLenBLZ: Word;
     nStartKTO: Word;
     nLenKTO: Word;
+    //20130830 Peter Mauss
+    nMask:String;
   end;
 
 function GetIBANMetrics(const aLand: string): TIBANMetrics;
