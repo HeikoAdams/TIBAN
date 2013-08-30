@@ -52,17 +52,28 @@ type
     procedure FillM97Tab;
     procedure SetErrorCode(nError: Integer);
   public
+    // 20130830 Heiko Adams ...
+    // Don't use these properties because they are deprecated and will be
+    // removed in future versions of this class!
     property Konto: string read FKTO write FKTO;
     property BLZ: string read FBLZ write FBLZ;
     property Land: string read GetLand write SetLand;
+    // ... 20130830 Heiko Adams
+    
+    // 20130830 Heiko Adams i18n version of german named public properties ...
+    property BankAccount: string read FKTO write FKTO;
+    property BankCode: string read FBLZ write FBLZ;
+    property Country: string read GetLand write SetLand;
+    // ... 20130830 Heiko Adams
+    
     property IBAN: string read BerechneIBAN write SetIBAN;
     property Valid: Boolean read PruefeIBAN;
     property ErrorCode: Integer read FLastError;
     
     function checkIban(const sIban: String): boolean; deprecated;
     function IsIBAN(const s:string):boolean;
-    function GetKTOFromIBAN: string;
-    function GetBLZFromIBAN: string;
+    function GetAccountNumberFromIBAN: string;
+    function GetBankCodeFromIBAN: string;
 
     constructor Create;
     destructor Destroy; override;
@@ -93,7 +104,7 @@ begin
   FLastError := nError;
 end;
 
-function TIBAN.GetKTOFromIBAN: string;
+function TIBAN.GetAccountNumberFromIBAN: string;
 begin
   Result := EmptyStr;
   SetErrorCode(0);
@@ -104,7 +115,7 @@ begin
     SetErrorCode(-180);
 end;
 
-function TIBAN.GetBLZFromIBAN: string;
+function TIBAN.GetBankCodeFromIBAN: string;
 begin
   Result := EmptyStr;
   SetErrorCode(0);
