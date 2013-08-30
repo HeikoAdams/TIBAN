@@ -31,30 +31,33 @@ interface
 uses IBANMetrics;
 
 type
-	TIBAN = class
-	private
-  	FKTO: string;
-	FBLZ: string;
-  	FLand: string;
+  TIBAN = class
+  private
+    FKTO: string;
+    FBLZ: string;
+    FLand: string;
     FIBAN: string;
+    FLastError: Integer;
 
     FMetrics: TIBANMetrics;
 
-    procedure SetLand(const aValue: string);
     function CodiereLandIBAN(const aLand: string): string;
     function Modulo97PruefZiffer(const aIBAN:string):Integer;
     function PruefeIBAN: Boolean;
     function BerechneIBAN: string;
     function GetLand: string;
     function GetCountryFromIBAN: string;
+    procedure SetLand(const aValue: string);
     procedure SetIBAN(const aValue: string);
     procedure FillM97Tab;
+    procedure SetErrorCode(nError: Integer);
   public
     property Konto: string read FKTO write FKTO;
     property BLZ: string read FBLZ write FBLZ;
     property Land: string read GetLand write SetLand;
     property IBAN: string read BerechneIBAN write SetIBAN;
     property Valid: Boolean read PruefeIBAN;
+    property ErrorCode: Integer read FLastError;
     
     function checkIban(const sIban: String): boolean; deprecated;
     function IsIBAN(const s:string):boolean;
@@ -82,12 +85,19 @@ begin
   FillM97Tab;
 end;
 
+procedure SetErrorCode(nError: Integer);
+begin
+  FLastError := nError;
+end;
+
 procedure TIBAN.SetLand(const aValue: string);
 begin
+  SetErrorCode(0);
   FLand := Trim(UpperCase(Copy(aValue, 1, 2)));
 
   if (Length(FLand) < 2) then
-    raise Exception.CreateFmt('Invalid country code: %s', [aValue]);
+    //raise Exception.CreateFmt('Invalid country code: %s', [aValue]);
+    SetErrorCode(-100);
 
   ZeroMemory(@FMetrics, SizeOf(FMetrics));
   FMetrics := GetIBANMetrics(FLand);
@@ -96,7 +106,8 @@ end;
 function TIBAN.GetCountryFromIBAN: string;
 begin
   if (Trim(FIBAN) = EmptyStr) then
-    raise Exception.Create('IBAN not set');
+    //raise Exception.Create('IBAN not set');
+    SetErrorCode(-110);
 
   Result := Copy(FIBAN, 1, 2);
 end;
@@ -104,20 +115,24 @@ end;
 procedure TIBAN.SetIBAN(const aValue: string);
 begin
   if (Trim(aValue) = EmptyStr) then
-    raise Exception.Create('No IBAN submitted');
+    //raise Exception.Create('No IBAN submitted');
+    SetErrorCode(-120);
 
-	FIBAN := aValue;
+  FIBAN := aValue;
   SetLand(GetCountryFromIBAN);
 end;
 
 function TIBAN.GetLand: string;
 begin
+  Result := EmptyStr;
+
   if not (FLand = EmptyStr) then
-  	Result := FLand
+    Result := FLand
   else if not (FIBAN = EmptyStr) then
-  	Result := GetCountryFromIBAN
+    Result := GetCountryFromIBAN
   else
-  	raise Exception.Create('No country or IBAN set');
+    //raise Exception.Create('No country or IBAN set');
+    SetErrorCode(-130);
 end;
 
 // Original code by shima (http://www.delphipraxis.net/1061658-post6.html)
@@ -134,7 +149,8 @@ begin
       nPruef := Pos(aIBAN[nCounter], m36) ;
 
       if (nPruef = 0) then
-         raise Exception.CreateFmt('Modulo97PruefZiffer(%s): invalid data', [aIBAN]);
+         //raise Exception.CreateFmt('Modulo97PruefZiffer(%s): invalid data', [aIBAN]);
+         SetErrorCode(-140);
 
       Dec(nPruef);
 
@@ -164,7 +180,8 @@ var
   sLetter: Char;
 begin
 	if (Length(Trim(aLand)) <> 2) then
-    raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
+    SetErrorCode(-100);
+    //raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
 
   for sLetter in aLand do
     case sLetter of
@@ -195,19 +212,20 @@ begin
       'Y': Result := Result + '34';
       'Z': Result := Result + '35';
     else
-      raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
+      //raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
+      SetErrorCode(-100);
     end;
 end;
 
 function TIBAN.PruefeIBAN(): Boolean;
 var
-	sBLZ: string;
+  sBLZ: string;
   sKTO: string;
   sIBAN: string;
   sLand: string;
   sControl: string;
 begin
-	Result := (Length(FIBAN) = FMetrics.nLenIBAN);
+  Result := (Length(FIBAN) = FMetrics.nLenIBAN);
 
   if Result then
   begin
@@ -217,7 +235,9 @@ begin
     sLand := CodiereLandIBAN(GetCountryFromIBAN);
     sIBAN := sBLZ + sKTO + sLand + sControl;
     Result := (Modulo97PruefZiffer(sIBAN) = 1);
-  end;
+  end
+  else
+    SetErrorCode(-150);
 end;
 
 function TIBAN.BerechneIBAN(): string;
@@ -227,7 +247,7 @@ var
   nControl: Integer;
   sControl: string;
 const
-	sSuffix = '00';
+  sSuffix = '00';
   nControlBase = 98;
 begin
   sKTO := StringOfChar('0', FMetrics.nLenKTO - Length(FKTO)) + FKTO;
@@ -242,10 +262,10 @@ begin
   sControl := IntToStr(nControl);
   
   if (nControl < 10) then
-	sControl := '0' + sControl;
-	
+    sControl := '0' + sControl;
+
   FIBAN := FLand + sControl + FBLZ + sKTO;
-  
+
   Result := FIBAN;
 end;
 
@@ -259,7 +279,7 @@ begin
   n:= length(sIban);
   
   if (n < 5) or (n > 34) then 
-	exit;
+    exit;
   
   len:= 0; 
   k:= 5;
@@ -281,8 +301,8 @@ begin
       inc(len);
     end
     else 
-	  exit;
-		
+      exit;
+
     inc(k);
     
     if (k > n) then 
@@ -311,29 +331,38 @@ var
   begin
     for i:=first to last do 
     begin
-	  c:=Ord(s[i])-48;
-	  
-	  case c of
-		 0..9     :  cs:=m97tab[cs,c];
-		 17..42   :  cs:=m97tab[m97tab[cs,(c-7) Div 10],(c-7) Mod 10];
-		 else Exit(False);
-	  end;
-   end;
-   result:=true;
+    c:=Ord(s[i])-48;
+  
+    case c of
+      0..9     :  cs:=m97tab[cs,c];
+      17..42   :  cs:=m97tab[m97tab[cs,(c-7) Div 10],(c-7) Mod 10];
+      else Exit(False);
+    end;
+  end;
+  result:=true;
 end;
 begin
   len:=Length(s);
   
-  if (len<5) or (len>34) then 
+  if (len<5) or (len>34) then
+  begin
+    SetErrorCode(-160);
     Exit(false);
+  end;
   
   cs:=0;
   
   if not GetCheckSum(5,len) then 
+  begin
+    SetErrorCode(-170);
     Exit(false);
+  end;
   
   if not GetCheckSum(1,4) then 
+  begin
+    SetErrorCode(-170);
     Exit(false);
+  end;
   
   result:=cs=1;
 end;

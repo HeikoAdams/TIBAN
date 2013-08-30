@@ -1,0 +1,9 @@
+Error-Code          Error
+-100                The country code is invalid
+-110                The IBAN has not been set
+-120                No IBAN has been submitted
+-130                Country or IBAN haven't been set
+-140                Invalid data
+-150                IBAN is invalid
+-160                Length of the submitted IBAN doesn't match
+-170                Checksum doesn't match
