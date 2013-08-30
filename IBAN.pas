@@ -33,9 +33,9 @@ uses IBANMetrics;
 type
   TIBAN = class
   private
-    FKTO: string;
-    FBLZ: string;
-    FLand: string;
+    FAccountID: string;
+    FBankCode: string;
+    FCountry: string;
     FIBAN: string;
     // 20130830 Heiko Adams
     FLastError: Integer;
@@ -43,12 +43,12 @@ type
     FMetrics: TIBANMetrics;
 
     function EncodeCountry(const aLand: string): string;
-    function Modulo97PruefZiffer(const aIBAN:string):Integer;
+    function Modulo97(const aIBAN:string):Integer;
     function CheckIBAN: Boolean;
     function CalcIBAN: string;
     function GetLand: string;
     function GetCountryFromIBAN: string;
-    procedure SetLand(const aValue: string);
+    procedure SetCountry(const aValue: string);
     procedure SetIBAN(const aValue: string);
     procedure FillM97Tab;
     // 20130830 Heiko Adams
@@ -57,15 +57,15 @@ type
     // 20130830 Heiko Adams ...
     // Don't use these properties because they are deprecated and will be
     // removed in future versions of this class!
-    property Konto: string read FKTO write FKTO;
-    property BLZ: string read FBLZ write FBLZ;
-    property Land: string read GetLand write SetLand;
+    property Konto: string read FAccountID write FAccountID;
+    property BLZ: string read FBankCode write FBankCode;
+    property Land: string read GetLand write SetCountry;
     // ... 20130830 Heiko Adams
     
     // 20130830 Heiko Adams i18n version of german named public properties ...
-    property BankAccount: string read FKTO write FKTO;
-    property BankCode: string read FBLZ write FBLZ;
-    property Country: string read GetLand write SetLand;
+    property BankAccount: string read FAccountID write FAccountID;
+    property BankCode: string read FBankCode write FBankCode;
+    property Country: string read GetLand write SetCountry;
     // ... 20130830 Heiko Adams
     
     property IBAN: string read CalcIBAN write SetIBAN;
@@ -139,19 +139,19 @@ begin
   // ... 20130830 Heiko Adams
 end;
 
-procedure TIBAN.SetLand(const aValue: string);
+procedure TIBAN.SetCountry(const aValue: string);
 begin
   // 20130830 Heiko Adams
   SetErrorCode(0);
-  FLand := Trim(UpperCase(Copy(aValue, 1, 2)));
+  FCountry := Trim(UpperCase(Copy(aValue, 1, 2)));
 
-  if (Length(FLand) < 2) then
+  if (Length(FCountry) < 2) then
     // 20130830 Heiko Adams
     //raise Exception.CreateFmt('Invalid country code: %s', [aValue]);
     SetErrorCode(-100);
 
   ZeroMemory(@FMetrics, SizeOf(FMetrics));
-  FMetrics := GetIBANMetrics(FLand);
+  FMetrics := GetIBANMetrics(FCountry);
 end;
 
 function TIBAN.GetCountryFromIBAN: string;
@@ -178,7 +178,7 @@ begin
     SetErrorCode(-120);
 
   FIBAN := aValue;
-  SetLand(GetCountryFromIBAN);
+  SetCountry(GetCountryFromIBAN);
 end;
 
 function TIBAN.GetLand: string;
@@ -187,8 +187,8 @@ begin
   SetErrorCode(0);
   Result := EmptyStr;
 
-  if not (FLand = EmptyStr) then
-    Result := FLand
+  if not (FCountry = EmptyStr) then
+    Result := FCountry
   else if not (FIBAN = EmptyStr) then
     Result := GetCountryFromIBAN
   else
@@ -198,7 +198,7 @@ begin
 end;
 
 // Original code by shima (http://www.delphipraxis.net/1061658-post6.html)
-function TIBAN.Modulo97PruefZiffer(const aIBAN:string):Integer;
+function TIBAN.Modulo97(const aIBAN:string):Integer;
 const
    m36:string = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var
@@ -306,7 +306,7 @@ begin
     sKTO := Copy(FIBAN, FMetrics.nStartKTO, FMetrics.nLenKTO);
     sLand := EncodeCountry(GetCountryFromIBAN);
     sIBAN := sBLZ + sKTO + sLand + sControl;
-    Result := (Modulo97PruefZiffer(sIBAN) = 1);
+    Result := (Modulo97(sIBAN) = 1);
   end
   // 20130830 Heiko Adams ...
   else
@@ -324,9 +324,9 @@ const
   sSuffix = '00';
   nControlBase = 98;
 begin
-  sKTO := StringOfChar('0', FMetrics.nLenKTO - Length(FKTO)) + FKTO;
-  sIBAN := FBLZ + sKTO + EncodeCountry(FLand)+  sSuffix;
-  nControl := Modulo97PruefZiffer(sIBAN);
+  sKTO := StringOfChar('0', FMetrics.nLenKTO - Length(FAccountID)) + FAccountID;
+  sIBAN := FBankCode + sKTO + EncodeCountry(FCountry)+  sSuffix;
+  nControl := Modulo97(sIBAN);
   nControl := nControlBase - nControl;
   
   // 20120224 Heiko Adams
@@ -338,7 +338,7 @@ begin
   if (nControl < 10) then
     sControl := '0' + sControl;
 
-  FIBAN := FLand + sControl + FBLZ + sKTO;
+  FIBAN := FCountry + sControl + FBankCode + sKTO;
 
   Result := FIBAN;
 end;
