@@ -62,7 +62,7 @@ type
     function checkIban(const sIban: String): boolean; deprecated;
     function IsIBAN(const s:string):boolean;
 
-	  constructor Create; override;
+	  constructor Create;
     destructor Destroy; override;
 	end;
 
@@ -271,7 +271,7 @@ end;
 
 // Prüfung einer IBAN auf formale Korrektheit (ohne Prüfung der Gültigkeit des Länderkürzels)
 // Autor: Dr. Michael Schramm, Bordesholm
-function checkIban(const sIban: String): boolean;
+function TIBAN.checkIban(const sIban: String): boolean;
 var k,i,n,len: integer; c: char;
     buff: array[0..67] of char;
 begin
