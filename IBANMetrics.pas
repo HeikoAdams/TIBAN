@@ -47,13 +47,13 @@ uses SysUtils;
 function GetIBANMetrics(const aLand: string): TIBANMetrics;
 begin
   {
-  	Übersicht über die Struktur der IBAN in verschiedenen Ländern:
-  	https://secure.wikimedia.org/wikipedia/de/wiki/International_Bank_Account_Number#IBAN-Struktur_in_verschiedenen_L.C3.A4ndern
+    Übersicht über die Struktur der IBAN in verschiedenen Ländern:
+    https://secure.wikimedia.org/wikipedia/de/wiki/International_Bank_Account_Number#IBAN-Struktur_in_verschiedenen_L.C3.A4ndern
   }
 
-	if (aLand = 'AT') then
+  if (aLand = 'AT') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 20;
       nLenBLZ := 5;
@@ -64,7 +64,7 @@ begin
   end
   else 	if (aLand = 'BE') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 16;
       nLenBLZ := 3;
@@ -77,7 +77,7 @@ begin
   end
   else if (aLand = 'CH') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 21;
       nLenBLZ := 5;
@@ -88,7 +88,7 @@ begin
   end
   else if (aLand = 'DE') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 22;
       nLenBLZ := 8;
@@ -99,7 +99,7 @@ begin
   end
   else 	if (aLand = 'DK') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 18;
       nLenBLZ := 4;
@@ -110,7 +110,7 @@ begin
   end
   else 	if (aLand = 'FR') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 27;
       nLenBLZ := 5;
@@ -121,7 +121,7 @@ begin
   end
   else if (aLand = 'LI') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 21;
       nLenBLZ := 5;
@@ -132,7 +132,7 @@ begin
   end
   else if (aLand = 'LU') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 20;
       nLenBLZ := 3;
@@ -145,7 +145,7 @@ begin
   end
   else if (aLand = 'NL') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 18;
       nLenBLZ := 4;
@@ -156,7 +156,7 @@ begin
   end
   else if (aLand = 'CZ') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 24;
       nLenBLZ := 4;
@@ -167,7 +167,7 @@ begin
   end
   else if (aLand = 'PL') then
   begin
-  	with Result do
+    with Result do
     begin
       nLenIBAN := 28;
       //20130830 Heiko Adams
@@ -179,7 +179,7 @@ begin
     end;
   end
   else
-  	raise Exception.CreateFmt('Country (%s) not supported yet', [aLand]);
+    raise Exception.CreateFmt('Country (%s) not supported yet', [aLand]);
 end;
 
 end.
