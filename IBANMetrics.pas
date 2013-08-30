@@ -68,7 +68,9 @@ begin
     begin
       nLenIBAN := 16;
       nLenBLZ := 3;
-      nLenKTO := 5;
+      // 20130830 Heiko Adams
+      //nLenKTO := 5;
+      nLenKTO := 7;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
     end;
@@ -134,7 +136,9 @@ begin
     begin
       nLenIBAN := 20;
       nLenBLZ := 3;
-      nLenKTO := 17;
+      //20130830 Heiko Adams
+      //nLenKTO := 17;
+      nLenKTO := 13;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
     end;
@@ -166,7 +170,9 @@ begin
   	with Result do
     begin
       nLenIBAN := 28;
-      nLenBLZ := 7;
+      //20130830 Heiko Adams
+      //nLenBLZ := 7;
+      nLenBLZ := 3;
       nLenKTO := 16;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
