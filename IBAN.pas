@@ -85,7 +85,7 @@ begin
   FillM97Tab;
 end;
 
-procedure SetErrorCode(nError: Integer);
+procedure TIBAN.SetErrorCode(nError: Integer);
 begin
   FLastError := nError;
 end;
@@ -105,6 +105,8 @@ end;
 
 function TIBAN.GetCountryFromIBAN: string;
 begin
+  SetErrorCode(0);
+  
   if (Trim(FIBAN) = EmptyStr) then
     //raise Exception.Create('IBAN not set');
     SetErrorCode(-110);
@@ -114,6 +116,8 @@ end;
 
 procedure TIBAN.SetIBAN(const aValue: string);
 begin
+  SetErrorCode(0);
+  
   if (Trim(aValue) = EmptyStr) then
     //raise Exception.Create('No IBAN submitted');
     SetErrorCode(-120);
@@ -124,6 +128,7 @@ end;
 
 function TIBAN.GetLand: string;
 begin
+  SetErrorCode(0);
   Result := EmptyStr;
 
   if not (FLand = EmptyStr) then
@@ -142,27 +147,28 @@ const
 var
    nCounter, nPruef : Integer;
 begin
-   Result := 0;
+  SetErrorCode(0);
+  Result := 0;
 
-   for nCounter := 1 to Length(aIBAN) do
-   begin
-      nPruef := Pos(aIBAN[nCounter], m36) ;
+  for nCounter := 1 to Length(aIBAN) do
+  begin
+    nPruef := Pos(aIBAN[nCounter], m36) ;
 
-      if (nPruef = 0) then
-         //raise Exception.CreateFmt('Modulo97PruefZiffer(%s): invalid data', [aIBAN]);
-         SetErrorCode(-140);
+    if (nPruef = 0) then
+       //raise Exception.CreateFmt('Modulo97PruefZiffer(%s): invalid data', [aIBAN]);
+      SetErrorCode(-140);
 
-      Dec(nPruef);
+    Dec(nPruef);
 
-      if (nPruef > 9) then
-      begin
-         Result := Result * 10 + (nPruef div 10);
-         nPruef := nPruef mod 10;
-      end;
+    if (nPruef > 9) then
+    begin
+       Result := Result * 10 + (nPruef div 10);
+       nPruef := nPruef mod 10;
+    end;
 
-      Result := Result * 10 + nPruef;
-      Result := Result mod 97;
-   end;
+    Result := Result * 10 + nPruef;
+    Result := Result mod 97;
+  end;
 end;
 
 // Code beigesteuert von Amateurprofi (http://www.delphipraxis.net/159320-iban-ueberpruefen.html#post1154665)
@@ -179,7 +185,8 @@ function TIBAN.CodiereLandIBAN(const aLand: string): string;
 var
   sLetter: Char;
 begin
-	if (Length(Trim(aLand)) <> 2) then
+  SetErrorCode(0);
+  if (Length(Trim(aLand)) <> 2) then
     SetErrorCode(-100);
     //raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
 
@@ -225,6 +232,7 @@ var
   sLand: string;
   sControl: string;
 begin
+  SetErrorCode(0);
   Result := (Length(FIBAN) = FMetrics.nLenIBAN);
 
   if Result then
@@ -342,6 +350,7 @@ var
   result:=true;
 end;
 begin
+  SetErrorCode(0);
   len:=Length(s);
   
   if (len<5) or (len>34) then
@@ -364,7 +373,7 @@ begin
     Exit(false);
   end;
   
-  result:=cs=1;
+  Result := (cs=1);
 end;
 
 end.
