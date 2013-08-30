@@ -60,6 +60,8 @@ begin
       nLenKTO := 11;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
   end
   else 	if (aLand = 'BE') then
@@ -73,6 +75,8 @@ begin
       nLenKTO := 7;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa;0;_';
     end;
   end
   else if (aLand = 'CH') then
@@ -84,6 +88,8 @@ begin
       nLenKTO := 12;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
     end;
   end
   else if (aLand = 'DE') then
@@ -95,6 +101,8 @@ begin
       nLenKTO := 10;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 9999 9999 9999 9999 99;0;_';
     end;
   end
   else 	if (aLand = 'DK') then
@@ -106,6 +114,8 @@ begin
       nLenKTO := 10;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
   end
   else 	if (aLand = 'FR') then
@@ -117,6 +127,8 @@ begin
       nLenKTO := 11;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aaa;0;_';
     end;
   end
   else if (aLand = 'LI') then
@@ -128,6 +140,8 @@ begin
       nLenKTO := 12;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
     end;
   end
   else if (aLand = 'LU') then
@@ -141,6 +155,8 @@ begin
       nLenKTO := 13;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
   end
   else if (aLand = 'NL') then
@@ -152,6 +168,8 @@ begin
       nLenKTO := 10;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
   end
   else if (aLand = 'CZ') then
@@ -163,6 +181,8 @@ begin
       nLenKTO := 16;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa;0;_';
     end;
   end
   else if (aLand = 'PL') then
@@ -176,6 +196,8 @@ begin
       nLenKTO := 16;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Peter Mauss
+      nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aa;0;_';
     end;
   end
   else
