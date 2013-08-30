@@ -61,8 +61,10 @@ type
     
     function checkIban(const sIban: String): boolean; deprecated;
     function IsIBAN(const s:string):boolean;
+    function GetKTOFromIBAN: string;
+    function GetBLZFromIBAN: string;
 
-	  constructor Create;
+    constructor Create;
     destructor Destroy; override;
 	end;
 
@@ -82,12 +84,35 @@ end;
 constructor TIBAN.Create;
 begin
   inherited;
+  SetErrorCode(0);
   FillM97Tab;
 end;
 
 procedure TIBAN.SetErrorCode(nError: Integer);
 begin
   FLastError := nError;
+end;
+
+function TIBAN.GetKTOFromIBAN: string;
+begin
+  Result := EmptyStr;
+  SetErrorCode(0);
+
+  if Assigned(FMetrics) and (trim(FIBAN) <> EmptyStr) then
+    Result := Copy(FIBAN, FMetrics.nStartKTO, FMetrics.nLenKTO)
+  else
+    SetErrorCode(-180);
+end;
+
+function TIBAN.GetBLZFromIBAN: string;
+begin
+  Result := EmptyStr;
+  SetErrorCode(0);
+
+  if Assigned(FMetrics) and (trim(FIBAN) <> EmptyStr) then
+    Result := Copy(FIBAN, FMetrics.nStartBLZ, FMetrics.nLenBLZ)
+  else
+    SetErrorCode(-190);
 end;
 
 procedure TIBAN.SetLand(const aValue: string);
