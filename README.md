@@ -1,4 +1,6 @@
 TIBAN
 =====
 
-TIBan is a small delphi class to easily create and verify IBANs
+TIBan is an easy to use delphi class to create and check international bank account numbers (IBAN). Extracting the bank account number and the bank code from an existing IBAN is also possible.
+
+The class does not return any errormessages in case of errors, so check the value of the ErrorCode property for being 0 after using class functions. The errorcodes.txt file contains an explanation of the used errorcodes.
