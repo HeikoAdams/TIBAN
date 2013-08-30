@@ -37,19 +37,21 @@ type
     FBLZ: string;
     FLand: string;
     FIBAN: string;
+    // 20130830 Heiko Adams
     FLastError: Integer;
 
     FMetrics: TIBANMetrics;
 
-    function CodiereLandIBAN(const aLand: string): string;
+    function EncodeCountry(const aLand: string): string;
     function Modulo97PruefZiffer(const aIBAN:string):Integer;
-    function PruefeIBAN: Boolean;
-    function BerechneIBAN: string;
+    function CheckIBAN: Boolean;
+    function CalcIBAN: string;
     function GetLand: string;
     function GetCountryFromIBAN: string;
     procedure SetLand(const aValue: string);
     procedure SetIBAN(const aValue: string);
     procedure FillM97Tab;
+    // 20130830 Heiko Adams
     procedure SetErrorCode(nError: Integer);
   public
     // 20130830 Heiko Adams ...
@@ -66,14 +68,18 @@ type
     property Country: string read GetLand write SetLand;
     // ... 20130830 Heiko Adams
     
-    property IBAN: string read BerechneIBAN write SetIBAN;
-    property Valid: Boolean read PruefeIBAN;
+    property IBAN: string read CalcIBAN write SetIBAN;
+    property Valid: Boolean read CheckIBAN;
+    // 20130830 Heiko Adams
     property ErrorCode: Integer read FLastError;
     
     function checkIban(const sIban: String): boolean; deprecated;
     function IsIBAN(const s:string):boolean;
+    
+    // 20130830 Heiko Adams ...
     function GetAccountNumberFromIBAN: string;
     function GetBankCodeFromIBAN: string;
+    // ... 20130830 Heiko Adams
 
     constructor Create;
     destructor Destroy; override;
@@ -95,6 +101,7 @@ end;
 constructor TIBAN.Create;
 begin
   inherited;
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   FillM97Tab;
 end;
@@ -107,31 +114,39 @@ end;
 function TIBAN.GetAccountNumberFromIBAN: string;
 begin
   Result := EmptyStr;
+  // 20130830 Heiko Adams
   SetErrorCode(0);
 
   if Assigned(FMetrics) and (trim(FIBAN) <> EmptyStr) then
     Result := Copy(FIBAN, FMetrics.nStartKTO, FMetrics.nLenKTO)
+  // 20130830 Heiko Adams ...
   else
     SetErrorCode(-180);
+  // ... 20130830 Heiko Adams
 end;
 
 function TIBAN.GetBankCodeFromIBAN: string;
 begin
   Result := EmptyStr;
+  // 20130830 Heiko Adams
   SetErrorCode(0);
 
   if Assigned(FMetrics) and (trim(FIBAN) <> EmptyStr) then
     Result := Copy(FIBAN, FMetrics.nStartBLZ, FMetrics.nLenBLZ)
+  // 20130830 Heiko Adams ...
   else
     SetErrorCode(-190);
+  // ... 20130830 Heiko Adams
 end;
 
 procedure TIBAN.SetLand(const aValue: string);
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   FLand := Trim(UpperCase(Copy(aValue, 1, 2)));
 
   if (Length(FLand) < 2) then
+    // 20130830 Heiko Adams
     //raise Exception.CreateFmt('Invalid country code: %s', [aValue]);
     SetErrorCode(-100);
 
@@ -141,9 +156,11 @@ end;
 
 function TIBAN.GetCountryFromIBAN: string;
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   
   if (Trim(FIBAN) = EmptyStr) then
+    // 20130830 Heiko Adams
     //raise Exception.Create('IBAN not set');
     SetErrorCode(-110);
 
@@ -152,9 +169,11 @@ end;
 
 procedure TIBAN.SetIBAN(const aValue: string);
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   
   if (Trim(aValue) = EmptyStr) then
+    // 20130830 Heiko Adams
     //raise Exception.Create('No IBAN submitted');
     SetErrorCode(-120);
 
@@ -164,6 +183,7 @@ end;
 
 function TIBAN.GetLand: string;
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   Result := EmptyStr;
 
@@ -172,6 +192,7 @@ begin
   else if not (FIBAN = EmptyStr) then
     Result := GetCountryFromIBAN
   else
+    // 20130830 Heiko Adams
     //raise Exception.Create('No country or IBAN set');
     SetErrorCode(-130);
 end;
@@ -183,6 +204,7 @@ const
 var
    nCounter, nPruef : Integer;
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   Result := 0;
 
@@ -191,7 +213,8 @@ begin
     nPruef := Pos(aIBAN[nCounter], m36) ;
 
     if (nPruef = 0) then
-       //raise Exception.CreateFmt('Modulo97PruefZiffer(%s): invalid data', [aIBAN]);
+      // 20130830 Heiko Adams
+      //raise Exception.CreateFmt('Modulo97PruefZiffer(%s): invalid data', [aIBAN]);
       SetErrorCode(-140);
 
     Dec(nPruef);
@@ -217,13 +240,16 @@ begin
       m97tab[i,j]:=(i*10+j) Mod 97;
 end;
 
-function TIBAN.CodiereLandIBAN(const aLand: string): string;
+function TIBAN.EncodeCountry(const aLand: string): string;
 var
   sLetter: Char;
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
+  
   if (Length(Trim(aLand)) <> 2) then
     SetErrorCode(-100);
+    // 20130830 Heiko Adams
     //raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
 
   for sLetter in aLand do
@@ -255,12 +281,13 @@ begin
       'Y': Result := Result + '34';
       'Z': Result := Result + '35';
     else
+      // 20130830 Heiko Adams
       //raise Exception.CreateFmt('Invalid country code: %s', [aLand]);
       SetErrorCode(-100);
     end;
 end;
 
-function TIBAN.PruefeIBAN(): Boolean;
+function TIBAN.CheckIBAN(): Boolean;
 var
   sBLZ: string;
   sKTO: string;
@@ -268,6 +295,7 @@ var
   sLand: string;
   sControl: string;
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   Result := (Length(FIBAN) = FMetrics.nLenIBAN);
 
@@ -276,15 +304,17 @@ begin
     sControl := Copy(FIBAN, 3, 2);
     sBLZ := Copy(FIBAN, FMetrics.nStartBLZ, FMetrics.nLenBLZ);
     sKTO := Copy(FIBAN, FMetrics.nStartKTO, FMetrics.nLenKTO);
-    sLand := CodiereLandIBAN(GetCountryFromIBAN);
+    sLand := EncodeCountry(GetCountryFromIBAN);
     sIBAN := sBLZ + sKTO + sLand + sControl;
     Result := (Modulo97PruefZiffer(sIBAN) = 1);
   end
+  // 20130830 Heiko Adams ...
   else
     SetErrorCode(-150);
+  // ... 20130830 Heiko Adams
 end;
 
-function TIBAN.BerechneIBAN(): string;
+function TIBAN.CalcIBAN(): string;
 var
   sKTO: string;
   sIBAN: string;
@@ -295,7 +325,7 @@ const
   nControlBase = 98;
 begin
   sKTO := StringOfChar('0', FMetrics.nLenKTO - Length(FKTO)) + FKTO;
-  sIBAN := FBLZ + sKTO + CodiereLandIBAN(FLand)+  sSuffix;
+  sIBAN := FBLZ + sKTO + EncodeCountry(FLand)+  sSuffix;
   nControl := Modulo97PruefZiffer(sIBAN);
   nControl := nControlBase - nControl;
   
@@ -386,11 +416,13 @@ var
   result:=true;
 end;
 begin
+  // 20130830 Heiko Adams
   SetErrorCode(0);
   len:=Length(s);
   
   if (len<5) or (len>34) then
   begin
+    // 20130830 Heiko Adams
     SetErrorCode(-160);
     Exit(false);
   end;
@@ -399,12 +431,14 @@ begin
   
   if not GetCheckSum(5,len) then 
   begin
+    // 20130830 Heiko Adams
     SetErrorCode(-170);
     Exit(false);
   end;
   
   if not GetCheckSum(1,4) then 
   begin
+    // 20130830 Heiko Adams
     SetErrorCode(-170);
     Exit(false);
   end;
