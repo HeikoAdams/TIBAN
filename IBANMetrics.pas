@@ -36,6 +36,11 @@ type
     nLenBLZ: Word;
     nStartKTO: Word;
     nLenKTO: Word;
+    //20130830 Heiko Adams ..
+    nStartChk: Word;
+    nLenChk: Word;
+    // .. 20130830 Heiko Adams
+    
     //20130830 Peter Mauss
     nMask:String;
   end;
@@ -50,7 +55,7 @@ function GetIBANMetrics(const aLand: string): TIBANMetrics;
 begin
   {
     Übersicht über die Struktur der IBAN in verschiedenen Ländern:
-    https://secure.wikimedia.org/wikipedia/de/wiki/International_Bank_Account_Number#IBAN-Struktur_in_verschiedenen_L.C3.A4ndern
+    https://de.wikipedia.org/wiki/International_Bank_Account_Number#IBAN-Struktur_in_verschiedenen_L.C3.A4ndern
   }
 
   if (aLand = 'AT') then
@@ -62,6 +67,10 @@ begin
       nLenKTO := 11;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
@@ -77,6 +86,10 @@ begin
       nLenKTO := 7;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 15;
+      nLenChk := 2;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa;0;_';
     end;
@@ -90,6 +103,10 @@ begin
       nLenKTO := 12;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
     end;
@@ -103,6 +120,10 @@ begin
       nLenKTO := 10;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 9999 9999 9999 9999 99;0;_';
     end;
@@ -116,6 +137,10 @@ begin
       nLenKTO := 10;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 18;
+      nLenChk := 1;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
@@ -129,6 +154,10 @@ begin
       nLenKTO := 11;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 26;
+      nLenChk := 2;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aaa;0;_';
     end;
@@ -142,6 +171,10 @@ begin
       nLenKTO := 12;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
     end;
@@ -157,6 +190,10 @@ begin
       nLenKTO := 13;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
@@ -170,6 +207,10 @@ begin
       nLenKTO := 10;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
@@ -183,6 +224,10 @@ begin
       nLenKTO := 16;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 0;
+      nLenChk := 0;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa;0;_';
     end;
@@ -198,6 +243,10 @@ begin
       nLenKTO := 16;
       nStartBLZ := 5;
       nStartKTO := nStartBLZ + nLenBLZ;
+      //20130830 Heiko Adams ..
+      nStartChk := 11;
+      nLenChk := 1;
+      // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
       nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aa;0;_';
     end;
