@@ -43,6 +43,9 @@ type
     
     //20130830 Peter Mauss
     nMask:String;
+    
+    //20130901 Heiko Adams
+    nErrorCode: Integer;
   end;
 
 function GetIBANMetrics(const aLand: string): TIBANMetrics;
@@ -57,6 +60,9 @@ begin
     Übersicht über die Struktur der IBAN in verschiedenen Ländern:
     https://de.wikipedia.org/wiki/International_Bank_Account_Number#IBAN-Struktur_in_verschiedenen_L.C3.A4ndern
   }
+  
+  //20130901 Heiko Adams
+  Result.nErrorCode := 0;
 
   if (aLand = 'AT') then
   begin
@@ -252,7 +258,9 @@ begin
     end;
   end
   else
-    raise Exception.CreateFmt('Country (%s) not supported yet', [aLand]);
+    //20130901 Heiko Adams
+    //raise Exception.CreateFmt('Country (%s) not supported yet', [aLand]);
+    Result.nError := -190;
 end;
 
 end.

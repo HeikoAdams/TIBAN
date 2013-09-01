@@ -152,6 +152,9 @@ begin
 
   ZeroMemory(@FMetrics, SizeOf(FMetrics));
   FMetrics := GetIBANMetrics(FCountry);
+  
+  //20130901 Heiko Adams
+  SetErrorCode(FMetrics.nErrorCode);
 end;
 
 function TIBAN.GetCountryFromIBAN: string;

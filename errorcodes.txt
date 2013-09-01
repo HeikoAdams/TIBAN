@@ -8,3 +8,4 @@ Error-Code          Error
 -160                Length of the submitted IBAN doesn't match
 -170                Checksum doesn't match
 -180                Unable to extract account number from IBAN
+-190                The country is currently unsupported
