@@ -22,7 +22,7 @@
 
      The Initial Developer of the Original Code is Heiko Adams <heiko.adams@gmail.com>.
 
-     Contributor(s): ______________________________________.
+     Contributor(s): Peter Mauss (Peter.Mauss@Advertum.de).
 }
 
 unit IBANMetrics;
