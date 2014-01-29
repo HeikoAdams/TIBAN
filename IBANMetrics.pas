@@ -42,7 +42,7 @@ type
     // .. 20130830 Heiko Adams
     
     //20130830 Peter Mauss
-    nMask:String;
+    sMask:String[100];
     
     //20130901 Heiko Adams
     nErrorCode: Integer;
@@ -78,7 +78,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
   end
   else 	if (aLand = 'BE') then
@@ -97,7 +97,7 @@ begin
       nLenChk := 2;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa;0;_';
     end;
   end
   else if (aLand = 'CH') then
@@ -114,7 +114,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
     end;
   end
   else if (aLand = 'DE') then
@@ -131,7 +131,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 9999 9999 9999 9999 99;0;_';
+      sMask:='>ll99 9999 9999 9999 9999 99;0;_';
     end;
   end
   else 	if (aLand = 'DK') then
@@ -148,7 +148,7 @@ begin
       nLenChk := 1;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
   end
   else 	if (aLand = 'FR') then
@@ -165,7 +165,7 @@ begin
       nLenChk := 2;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aaa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aaa;0;_';
     end;
   end
   else if (aLand = 'LI') then
@@ -182,7 +182,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa a;0;_';
     end;
   end
   else if (aLand = 'LU') then
@@ -201,7 +201,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
   end
   else if (aLand = 'NL') then
@@ -218,7 +218,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
   end
   else if (aLand = 'CZ') then
@@ -235,7 +235,7 @@ begin
       nLenChk := 0;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa aaaa;0;_';
     end;
   end
   else if (aLand = 'PL') then
@@ -254,7 +254,7 @@ begin
       nLenChk := 1;
       // .. 20130830 Heiko Adams
       //20130830 Peter Mauss
-      nMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aa;0;_';
+      sMask:='>ll99 aaaa aaaa aaaa aaaa aaaa aa;0;_';
     end;
   end
   else
