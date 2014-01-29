@@ -117,7 +117,7 @@ begin
   // 20130830 Heiko Adams
   SetErrorCode(0);
 
-  if Assigned(FMetrics) and (trim(FIBAN) <> EmptyStr) then
+  if (FMetrics.nLenIBAN <> 0) and (trim(FIBAN) <> EmptyStr) then
     Result := Copy(FIBAN, FMetrics.nStartKTO, FMetrics.nLenKTO)
   // 20130830 Heiko Adams ...
   else
@@ -131,7 +131,7 @@ begin
   // 20130830 Heiko Adams
   SetErrorCode(0);
 
-  if Assigned(FMetrics) and (trim(FIBAN) <> EmptyStr) then
+  if (FMetrics.nLenIBAN <> 0) and (trim(FIBAN) <> EmptyStr) then
     Result := Copy(FIBAN, FMetrics.nStartBLZ, FMetrics.nLenBLZ)
   // 20130830 Heiko Adams ...
   else
@@ -449,4 +449,4 @@ begin
   Result := (cs=1);
 end;
 
-end.
+end.
