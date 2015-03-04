@@ -9,3 +9,5 @@ Error-Code          Error
 -170                Checksum doesn't match
 -180                Unable to extract account number from IBAN
 -190                The country is currently unsupported
+-200                Account-ID not set
+-210                Bank-Code not set
