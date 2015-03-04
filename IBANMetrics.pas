@@ -81,7 +81,7 @@ begin
       sMask:='>ll99 aaaa aaaa aaaa aaaa;0;_';
     end;
   end
-  else 	if (aLand = 'BE') then
+  else if (aLand = 'BE') then
   begin
     with Result do
     begin
@@ -134,7 +134,7 @@ begin
       sMask:='>ll99 9999 9999 9999 9999 99;0;_';
     end;
   end
-  else 	if (aLand = 'DK') then
+  else if (aLand = 'DK') then
   begin
     with Result do
     begin
@@ -151,7 +151,7 @@ begin
       sMask:='>ll99 aaaa aaaa aaaa aa;0;_';
     end;
   end
-  else 	if (aLand = 'FR') then
+  else if (aLand = 'FR') then
   begin
     with Result do
     begin
