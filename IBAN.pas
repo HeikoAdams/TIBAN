@@ -46,26 +46,21 @@ type
     function Modulo97(const aIBAN:string):Integer;
     function CheckIBAN: Boolean;
     function CalcIBAN: string;
-    function GetLand: string;
+    function GetCountry: string;
     function GetCountryFromIBAN: string;
     procedure SetCountry(const aValue: string);
     procedure SetIBAN(const aValue: string);
     procedure FillM97Tab;
     // 20130830 Heiko Adams
     procedure SetErrorCode(nError: Integer);
+    // 20150304 Heiko Adams
+    function GetAccountID: string;
+    function GetBankCode: string;
   public
-    // 20130830 Heiko Adams ...
-    // Don't use these properties because they are deprecated and will be
-    // removed in future versions of this class!
-    property Konto: string read FAccountID write FAccountID;
-    property BLZ: string read FBankCode write FBankCode;
-    property Land: string read GetLand write SetCountry;
-    // ... 20130830 Heiko Adams
-    
     // 20130830 Heiko Adams i18n version of german named public properties ...
-    property BankAccount: string read FAccountID write FAccountID;
-    property BankCode: string read FBankCode write FBankCode;
-    property Country: string read GetLand write SetCountry;
+    property BankAccount: string read GetAccountID write FAccountID;
+    property BankCode: string read GetBankCode write FBankCode;
+    property Country: string read GetCountry write SetCountry;
     // ... 20130830 Heiko Adams
     
     property IBAN: string read CalcIBAN write SetIBAN;
@@ -184,7 +179,7 @@ begin
   SetCountry(GetCountryFromIBAN);
 end;
 
-function TIBAN.GetLand: string;
+function TIBAN.GetCountry: string;
 begin
   // 20130830 Heiko Adams
   SetErrorCode(0);
@@ -447,6 +442,17 @@ begin
   end;
   
   Result := (cs=1);
+end;
+
+function GetBankCode: string;
+begin
+  SetErrorCode(0);
+  Result := EmptyStr;
+
+  if not (FBankCode = EmptyStr) then
+    Result := FBankCode
+  else
+    SetErrorCode(-210);
 end;
 
 end.
